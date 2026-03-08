@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.27.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.json","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js" defer></script>
+
+    <meta name="description" content="写在开头在了解Docker 之前，我们先来聊聊为什么在已经有了虚拟机技术的情况下，我们还需要再造一个 Docker 容器技术? 首先，我们来举个生活场景的例子。如果把运行一个程序比作“我们要去住宿”，虚拟机就是给你盖了一栋独立别墅，而 Docker 则是给你提供了一间精装修的白领公寓。 对于每一栋别墅，也就是虚拟机（VM）都必须自己打地基、铺设独立的上下水管道、安装独立的电表（Guest OS操作">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Docker">
+<meta property="og:url" content="http://example.com/2026/02/08/docker/index.html">
+<meta property="og:site_name" content="半亩方塘一鉴开">
+<meta property="og:description" content="写在开头在了解Docker 之前，我们先来聊聊为什么在已经有了虚拟机技术的情况下，我们还需要再造一个 Docker 容器技术? 首先，我们来举个生活场景的例子。如果把运行一个程序比作“我们要去住宿”，虚拟机就是给你盖了一栋独立别墅，而 Docker 则是给你提供了一间精装修的白领公寓。 对于每一栋别墅，也就是虚拟机（VM）都必须自己打地基、铺设独立的上下水管道、安装独立的电表（Guest OS操作">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/2026/02/08/docker/Container-Hierarchy.png">
+<meta property="og:image" content="http://example.com/2026/02/08/docker/Container-Hierarchy.png">
+<meta property="article:published_time" content="2026-02-08T11:34:00.000Z">
+<meta property="article:modified_time" content="2026-03-05T05:21:58.091Z">
+<meta property="article:author" content="Sam Fan">
+<meta property="article:tag" content="docker">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2026/02/08/docker/Container-Hierarchy.png">
+
+
+<link rel="canonical" href="http://example.com/2026/02/08/docker/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2026/02/08/docker/","path":"2026/02/08/docker/","title":"Docker"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Docker | 半亩方塘一鉴开</title>
+  
+
+
+
+
+
+
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.5.0/search.js" integrity="sha256-xFC6PJ82SL9b3WkGjFavNiA9gm5z6UBxWPiu4CYjptg=" crossorigin="anonymous" defer></script>
+<script src="/js/third-party/search/local-search.js" defer></script>
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">半亩方塘一鉴开</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="搜索..." spellcheck="false"
+                type="search" class="search-input">
+        </div>
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%86%99%E5%9C%A8%E5%BC%80%E5%A4%B4"><span class="nav-number">1.</span> <span class="nav-text">写在开头</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Docker-%E9%95%9C%E5%83%8F"><span class="nav-number">2.</span> <span class="nav-text">Docker 镜像</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Docker-%E5%AE%B9%E5%99%A8"><span class="nav-number">3.</span> <span class="nav-text">Docker 容器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Docker-%E9%95%9C%E5%83%8F-1"><span class="nav-number">4.</span> <span class="nav-text">Docker 镜像</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Sam Fan</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">5</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">分类</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2026/02/08/docker/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Sam Fan">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="半亩方塘一鉴开">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Docker | 半亩方塘一鉴开">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Docker
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2026-02-08 19:34:00" itemprop="dateCreated datePublished" datetime="2026-02-08T19:34:00+08:00">2026-02-08</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2026-03-05 13:21:58" itemprop="dateModified" datetime="2026-03-05T13:21:58+08:00">2026-03-05</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/devops/" itemprop="url" rel="index"><span itemprop="name">devops</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h3 id="写在开头"><a href="#写在开头" class="headerlink" title="写在开头"></a>写在开头</h3><p>在了解Docker 之前，我们先来聊聊为什么在已经有了虚拟机技术的情况下，我们还需要再造一个 Docker 容器技术?</p>
+<p>首先，我们来举个生活场景的例子。如果把运行一个程序比作“我们要去住宿”，虚拟机就是给你盖了一栋独立别墅，而 Docker 则是给你提供了一间精装修的白领公寓。</p>
+<p>对于每一栋别墅，也就是虚拟机（VM）都必须自己打地基、铺设独立的上下水管道、安装独立的电表（Guest OS操作系统、内核、虚拟硬件）；而docker，也就是所有的公寓共享大楼的整套地基、承重梁、主水管和供电系统（宿主机内核、CPU、内存）。那么作为入住的你，是愿意等待耗时更久的别墅，还是耗时较短的公寓？当然，这是仁者见仁，智者见智的事情，也许你愿意等待，毕竟独立的别墅，比较私密，不存在共享资源的问题，相对会更安全；但是如果你只是想要快速拎包入住，对安全没有那么高的要求，那么公寓也是一个不错的选择。</p>
+<p>所以，如果程序运行的操作系统没有什么差别时，或者说所有的程序都基于统一操作系统运行，那么采用docker进行部署，就会比虚拟机更节省资源，也更高效。</p>
+<h3 id="Docker-镜像"><a href="#Docker-镜像" class="headerlink" title="Docker 镜像"></a>Docker 镜像</h3><p>前面提到docker的高效性，那么它为什么会更高效呢？这里就不得不提到docker镜像。</p>
+<p>镜像（Image）是Docker运行容器的基础，镜像可以理解为Docker容器的模板，镜像可以基于其他镜像创建，也可以作为其他镜像的基础。</p>
+<p>如果说容器是“运行中的公寓”，那么镜像（Image）就是那套极其高效的“装修图纸”和“建材包”。</p>
+<p>Docker 之所以高效，绝不仅仅是因为它省去了虚拟机内核的开销，更核心的秘密在于它对镜像存储方式的革命性设计。它采用了联合文件系统 (UnionFS)，内部的核心是分层存储(Layering)模式。</p>
+<img src="/2026/02/08/docker/Container-Hierarchy.png" class="" title="容器分层结构图">
+
+<p>这是 Docker 镜像最精妙的设计。想象一下你在装修公寓：</p>
+<p>第一层（基础层）： 铺好地板（安装 Ubuntu 系统）。</p>
+<p>第二层（环境层）： 搬进灶台（安装 JAVA 环境）。</p>
+<p>第三层（应用层）： 摆放厨具（放入你的代码）。</p>
+<p>这种分层带来的好处是惊人的：</p>
+<p><strong>复用与共享</strong>： 如果你启动了 10 个不同的 JAVA 应用，它们可以共用同一个 Ubuntu 镜像层和 JAVA 环境层（版本一样的情况下）。你的硬盘里只存了一份地板和灶台，而不是 10 份。</p>
+<p><strong>写时复制</strong> (Copy-on-Write)： 所有的镜像层都是只读的。当你修改容器里的文件时，Docker 只会把需要修改的文件“复制”到最上面的容器运行层。这保证了底层镜像永远保持纯净，且修改非常轻量。</p>
+<p><strong>极速分发</strong>： 当你更新应用时，你只需要推送（Push）发生变化的那一层（代码层），底层庞大的系统镜像不需要重复传输。</p>
+<h3 id="Docker-容器"><a href="#Docker-容器" class="headerlink" title="Docker 容器"></a>Docker 容器</h3><p>有了“装修图纸”和“建材包”，我们就可以快速构建公寓了，也就是可以基于镜像去创建容器。</p>
+<p>镜像 (Image)是静态的、只读的。它是你打包好的“环境模板”。</p>
+<p>容器 (Container)，是动态的、可读写的。它是在镜像这个“只读底座”上，加了一层<strong>可写层</strong>。</p>
+<h3 id="Docker-镜像-1"><a href="#Docker-镜像-1" class="headerlink" title="Docker 镜像"></a>Docker 镜像</h3><img src="/2026/02/08/docker/Container-Hierarchy.png" class="" title="容器分层结构图">
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/docker/" rel="tag"># docker</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2026/02/07/demo/" rel="prev" title="如何搭建个人博客">
+                  <i class="fa fa-angle-left"></i> 如何搭建个人博客
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2026/02/20/docker-usage/" rel="next" title="Docker 相关使用">
+                  Docker 相关使用 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2026</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Sam Fan</span>
+  </div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+</body>
+</html>
