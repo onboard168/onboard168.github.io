@@ -165,7 +165,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">4</span>
+          <span class="site-state-item-count">7</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -174,7 +174,7 @@
         <span class="site-state-item-name">分类</span>
       </div>
       <div class="site-state-item site-state-tags">
-        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-count">10</span>
         <span class="site-state-item-name">标签</span>
       </div>
   </nav>
@@ -191,6 +191,391 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2026/04/18/Docker-Desktop%E5%AE%89%E8%A3%85/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Sam Fan">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="半亩方塘一鉴开">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content=" | 半亩方塘一鉴开">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2026/04/18/Docker-Desktop%E5%AE%89%E8%A3%85/" class="post-title-link" itemprop="url">Docker Desktop 安装</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2026-04-18 13:59:16 / 修改时间：14:24:50" itemprop="dateCreated datePublished" datetime="2026-04-18T13:59:16+08:00">2026-04-18</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>使用命令提示符 (CMD) 工具进行安装。</p>
+<p>在 Windows 上将 Docker Desktop 安装到 D 盘并解决权限问题，其实是一个”曲线救国”的过程。因为 Docker 的官方安装包默认强制安装在 <code>C:\Program Files\Docker\Docker</code>，且没有提供直接的选择路径界面。</p>
+<p>我们可以通过<strong>目录软链接（Symbolic Link）</strong>的方式，骗过安装程序，让它以为装在 C 盘，实则文件存储在 D 盘。</p>
+<h2 id="第一步：准备工作与解决权限问题"><a href="#第一步：准备工作与解决权限问题" class="headerlink" title="第一步：准备工作与解决权限问题"></a>第一步：准备工作与解决权限问题</h2><p>在操作 D 盘时，如果提示”无权限创建目录”，通常是因为 D 盘根目录受系统保护，或者你当前的账户不是管理员。</p>
+<h3 id="1-以管理员身份运行终端"><a href="#1-以管理员身份运行终端" class="headerlink" title="1. 以管理员身份运行终端"></a>1. 以管理员身份运行终端</h3><p>按下 <code>Win + X</code>，选择<strong>终端管理员</strong>或<strong>命令提示符（管理员）</strong>。</p>
+<p>只有在管理员模式下，你才有权在 D 盘根目录创建文件夹，并建立系统级软链接。</p>
+<h3 id="2-创建目标目录并赋权"><a href="#2-创建目标目录并赋权" class="headerlink" title="2. 创建目标目录并赋权"></a>2. 创建目标目录并赋权</h3><p>在终端中输入以下命令（假设我们要装在 <code>D:\Software\Docker</code>）：</p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">mkdir</span> &quot;D:\Software\Docker&quot;</span><br><span class="line">icacls &quot;D:\Software\Docker&quot; /grant Everyone:(OI)(CI)F /T</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p><strong>注意</strong>：<code>icacls</code> 命令会将该目录的完全控制权限授予所有用户，从而彻底解决后续 Docker 运行时的写入权限问题。</p>
+</blockquote>
+<h2 id="第二步：建立软链接"><a href="#第二步：建立软链接" class="headerlink" title="第二步：建立软链接"></a>第二步：建立软链接</h2><p>在安装 Docker 之前，我们需要先在 C 盘建立一个”虚假”的指向：</p>
+<h3 id="1-确保-C-盘对应的目录不存在"><a href="#1-确保-C-盘对应的目录不存在" class="headerlink" title="1. 确保 C 盘对应的目录不存在"></a>1. 确保 C 盘对应的目录不存在</h3><p>如果 <code>C:\Program Files\Docker</code> 已经存在，请先手动删除。</p>
+<h3 id="2-执行联接命令"><a href="#2-执行联接命令" class="headerlink" title="2. 执行联接命令"></a>2. 执行联接命令</h3><p>在管理员终端输入：</p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mklink /j &quot;C:\Program Files\Docker&quot; &quot;D:\Software\Docker&quot;</span><br></pre></td></tr></table></figure>
+
+<p>这条命令的意思是：在 C 盘创建一个名为 Docker 的”快捷方式”，它的实际物理存储指向 D 盘。</p>
+<h2 id="第三步：安装-Docker-Desktop"><a href="#第三步：安装-Docker-Desktop" class="headerlink" title="第三步：安装 Docker Desktop"></a>第三步：安装 Docker Desktop</h2><ol>
+<li>从 <a target="_blank" rel="noopener" href="https://www.docker.com/products/docker-desktop">Docker 官网</a> 下载安装包</li>
+<li>正常双击运行安装程序</li>
+<li><strong>关键点</strong>：安装过程中不要修改任何路径（反正它也不让你改），直接点击安装</li>
+<li>安装程序会将文件写入 <code>C:\Program Files\Docker</code>，但由于我们之前做了软链接，这些文件会自动流向 D 盘</li>
+</ol>
+<h2 id="第四步：配置环境变量"><a href="#第四步：配置环境变量" class="headerlink" title="第四步：配置环境变量"></a>第四步：配置环境变量</h2><p>安装完成后，需要配置环境变量才能在任意位置使用 Docker 命令。</p>
+<h3 id="1-配置-Docker-路径"><a href="#1-配置-Docker-路径" class="headerlink" title="1. 配置 Docker 路径"></a>1. 配置 Docker 路径</h3><p>Docker Desktop 通常会自动添加环境变量，但如果没有，可以手动添加：</p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">setx <span class="built_in">PATH</span> &quot;<span class="variable">%PATH%</span>;D:\soft\Docker\Docker\resources\bin&quot; /M</span><br></pre></td></tr></table></figure>
+
+<p>或手动添加以下路径到系统 <code>PATH</code>：</p>
+<ul>
+<li><code>D:\soft\Docker\Docker\resources\bin</code></li>
+</ul>
+<h3 id="2-配置镜像加速（可选）"><a href="#2-配置镜像加速（可选）" class="headerlink" title="2. 配置镜像加速（可选）"></a>2. 配置镜像加速（可选）</h3><p>在国内使用时，建议配置镜像加速器以提高拉取速度。</p>
+<p>打开 Docker Desktop，进入 <strong>Settings</strong> → <strong>Docker Engine</strong>，在配置中添加：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;registry-mirrors&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">    <span class="string">&quot;https://docker.mirrors.ustc.edu.cn&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="string">&quot;https://hub-mirror.c.163.com&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="string">&quot;https://mirror.baidubce.com&quot;</span></span><br><span class="line">  <span class="punctuation">]</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>然后点击 <strong>Apply &amp; Restart</strong>。</p>
+<h3 id="3-配置-WSL2-集成（推荐）"><a href="#3-配置-WSL2-集成（推荐）" class="headerlink" title="3. 配置 WSL2 集成（推荐）"></a>3. 配置 WSL2 集成（推荐）</h3><p>如果使用 WSL2 后端，需要确保 WSL2 集成已启用：</p>
+<ol>
+<li>打开 Docker Desktop → <strong>Settings</strong> → <strong>Resources</strong> → <strong>WSL Integration</strong></li>
+<li>开启 <strong>Enable integration with my default WSL distro</strong></li>
+<li>选择需要集成的 WSL 发行版</li>
+<li>点击 <strong>Apply &amp; Restart</strong></li>
+</ol>
+<h2 id="验证安装"><a href="#验证安装" class="headerlink" title="验证安装"></a>验证安装</h2><p>安装完成后，可以通过以下命令验证：</p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">docker --version</span><br><span class="line">docker-compose --version</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="常见问题"><a href="#常见问题" class="headerlink" title="常见问题"></a>常见问题</h2><h3 id="1-软链接创建失败"><a href="#1-软链接创建失败" class="headerlink" title="1. 软链接创建失败"></a>1. 软链接创建失败</h3><p>如果提示”拒绝访问”，请确保：</p>
+<ul>
+<li>以管理员身份运行终端</li>
+<li><code>C:\Program Files\Docker</code> 目录确实不存在</li>
+</ul>
+<h3 id="2-Docker-启动失败"><a href="#2-Docker-启动失败" class="headerlink" title="2. Docker 启动失败"></a>2. Docker 启动失败</h3><p>检查软链接是否正确创建：</p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">dir</span> &quot;C:\Program Files\&quot; | <span class="built_in">findstr</span> Docker</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-卸载后再安装"><a href="#3-卸载后再安装" class="headerlink" title="3. 卸载后再安装"></a>3. 卸载后再安装</h3><p>如果之前安装过 Docker，建议先完全卸载：</p>
+<ol>
+<li>控制面板卸载 Docker Desktop</li>
+<li>删除 <code>C:\Program Files\Docker</code>（如果是软链接，先删除链接）</li>
+<li>删除 <code>D:\Software\Docker</code> 中的所有内容</li>
+<li>重新按照上述步骤安装</li>
+</ol>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2026/03/18/%E7%AE%80%E8%A6%81%E6%A6%82%E8%BF%B0%E9%A1%B5%E9%9D%A2%E5%A6%82%E4%BD%95%E6%8E%A5%E6%94%B6%E7%9B%B8%E6%9C%BA%E7%9A%84%E6%B5%81%E6%95%B0%E6%8D%AE/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Sam Fan">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="半亩方塘一鉴开">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content=" | 半亩方塘一鉴开">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2026/03/18/%E7%AE%80%E8%A6%81%E6%A6%82%E8%BF%B0%E9%A1%B5%E9%9D%A2%E5%A6%82%E4%BD%95%E6%8E%A5%E6%94%B6%E7%9B%B8%E6%9C%BA%E7%9A%84%E6%B5%81%E6%95%B0%E6%8D%AE/" class="post-title-link" itemprop="url">简要概述页面如何接收相机的流数据</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2026-03-18 22:20:34" itemprop="dateCreated datePublished" datetime="2026-03-18T22:20:34+08:00">2026-03-18</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2026-04-18 14:26:34" itemprop="dateModified" datetime="2026-04-18T14:26:34+08:00">2026-04-18</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h2 id="使用到的技术栈"><a href="#使用到的技术栈" class="headerlink" title="使用到的技术栈"></a>使用到的技术栈</h2><ul>
+<li><strong>WebRtcStreamer</strong>：WebRTC 流媒体网关，用于协议转换</li>
+<li><strong>MediaMTX</strong>：开源媒体服务器，用于流媒体分发</li>
+</ul>
+<h2 id="数据流的产生流程"><a href="#数据流的产生流程" class="headerlink" title="数据流的产生流程"></a>数据流的产生流程</h2><ol>
+<li>摄像头产生 RTSP 数据流</li>
+<li>MediaMTX 接收 RTSP 数据流</li>
+<li>WebRTC-Streamer 接收 MediaMTX 的数据流</li>
+</ol>
+<h2 id="架构概述"><a href="#架构概述" class="headerlink" title="架构概述"></a>架构概述</h2><p>这套架构是目前工业级视频监控网页化的标准方案：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">摄像头(源) -&gt; MediaMTX(分发/解耦) -&gt; WebRTC-Streamer(转协议) -&gt; 浏览器(渲染)</span><br></pre></td></tr></table></figure>
+
+<h2 id="完整的数据流转路径"><a href="#完整的数据流转路径" class="headerlink" title="完整的数据流转路径"></a>完整的数据流转路径</h2><h3 id="1-产生源（Producer）"><a href="#1-产生源（Producer）" class="headerlink" title="1. 产生源（Producer）"></a>1. 产生源（Producer）</h3><p>摄像头通过物理硬件捕获画面，编码成 H.264 原始数据，并运行一个 RTSP Server 进程。</p>
+<h3 id="2-流媒体服务器（MediaMTX-Proxy）"><a href="#2-流媒体服务器（MediaMTX-Proxy）" class="headerlink" title="2. 流媒体服务器（MediaMTX &#x2F; Proxy）"></a>2. 流媒体服务器（MediaMTX &#x2F; Proxy）</h3><p>MediaMTX 主动向摄像头拉取（Pull）RTSP 流，或者接收摄像头的推送（Push）。</p>
+<p><strong>作用</strong>：它像一个视频监控的”云盘”或”分发站”。它把摄像头的流稳定下来，支持多人同时拉取，避免多人直接访问摄像头导致摄像头 CPU 崩溃。</p>
+<h3 id="3-协议转换层（WebRTC-Streamer）"><a href="#3-协议转换层（WebRTC-Streamer）" class="headerlink" title="3. 协议转换层（WebRTC-Streamer）"></a>3. 协议转换层（WebRTC-Streamer）</h3><p>WebRTC-Streamer 并不直接存储视频，它是一个 Gateway（网关）。</p>
+<p>它从 MediaMTX 拉取 RTSP 流，实时地将 RTSP&#x2F;RTP 包解封装，并重新打包成符合 WebRTC 标准的加密数据包（SRTP）。</p>
+<h3 id="4-展示端（Browser）"><a href="#4-展示端（Browser）" class="headerlink" title="4. 展示端（Browser）"></a>4. 展示端（Browser）</h3><p>浏览器通过 JS 调用 <code>WebRtcStreamer.js</code> 与后端握手，最终通过 UDP 直接接收来自 WebRTC-Streamer 的视频流。</p>
+<h2 id="为什么要加一层-MediaMTX？"><a href="#为什么要加一层-MediaMTX？" class="headerlink" title="为什么要加一层 MediaMTX？"></a>为什么要加一层 MediaMTX？</h2><p>你可能会问：”我直接用 WebRTC-Streamer 接摄像头不行吗？”当然可以，但加上 MediaMTX 有以下几个好处：</p>
+<table>
+<thead>
+<tr>
+<th>维度</th>
+<th>直连 (Camera -&gt; WebRTC-Streamer)</th>
+<th>代理 (Camera -&gt; MediaMTX -&gt; WebRTC-Streamer)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>并发能力</strong></td>
+<td>摄像头通常只允许 2-3 路连接，多了会掉线</td>
+<td>MediaMTX 可以支持成百上千人同时看</td>
+</tr>
+<tr>
+<td><strong>协议转换</strong></td>
+<td>只能转 WebRTC</td>
+<td>可以同时输出 RTSP, RTMP, HLS, WebRTC</td>
+</tr>
+<tr>
+<td><strong>稳定性</strong></td>
+<td>摄像头断网后前端连接直接死掉</td>
+<td>MediaMTX 可以保持服务在线，等待摄像头重连</td>
+</tr>
+<tr>
+<td><strong>安全性</strong></td>
+<td>需要把摄像头的账号密码暴露在前端配置中</td>
+<td>前端只访问 MediaMTX 的地址，隐藏了原始摄像头信息</td>
+</tr>
+</tbody></table>
+<h2 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h2><h3 id="一个小陷阱"><a href="#一个小陷阱" class="headerlink" title="一个小陷阱"></a>一个小陷阱</h3><p>在你的架构中，WebRTC-Streamer 本身也具备拉流能力。</p>
+<p>如果你的配置是：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">webRtcServer.<span class="title function_">connect</span>(rtspUrl)</span><br></pre></td></tr></table></figure>
+
+<p>这里的 <code>rtspUrl</code> 应该是 MediaMTX 给出的转发地址（例如 <code>rtsp://192.168.1.80:8554/mystream</code>），而不是摄像头的原始地址。</p>
+<blockquote>
+<p>⚠️ <strong>注意</strong>：如果填错了，WebRTC-Streamer 就会绕过 MediaMTX 直接去连摄像头，那 MediaMTX 就变成”摆设”了。</p>
+</blockquote>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2026/03/12/%E6%9C%89%E5%85%B3VLN%E4%B8%8EVLA/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Sam Fan">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="半亩方塘一鉴开">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content=" | 半亩方塘一鉴开">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2026/03/12/%E6%9C%89%E5%85%B3VLN%E4%B8%8EVLA/" class="post-title-link" itemprop="url">有关VLN与VLA</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2026-03-12 14:56:59 / 修改时间：14:59:31" itemprop="dateCreated datePublished" datetime="2026-03-12T14:56:59+08:00">2026-03-12</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="VLN-与-VLA"><a href="#VLN-与-VLA" class="headerlink" title="VLN 与 VLA"></a>VLN 与 VLA</h1><p>VLN（视觉-语言-导航）和 VLA（视觉-语言-动作）都是具身智能领域的核心技术方向，你可以把它们理解为<strong>一个以“移动”为目标，另一个以“操作”为核心</strong>。它们共享相同的“大脑”（视觉语言理解能力），但执行着不同的“身体”任务。</p>
+<p>为了让你更清晰地理解，我把它们的核心区别和联系整理成下表：</p>
+<table>
+<thead>
+<tr>
+<th align="left">对比维度</th>
+<th align="left">VLN (视觉-语言-导航)</th>
+<th align="left">VLA (视觉-语言-动作)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><strong>🤔 核心定义</strong></td>
+<td align="left">智能体结合视觉信息和自然语言指令，在环境中进行<strong>导航和移动</strong>的任务。</td>
+<td align="left">智能体结合视觉、语言信息，直接<strong>生成并执行具体的物理动作</strong>（如抓取、放置）的模型。</td>
+</tr>
+<tr>
+<td align="left"><strong>🎯 主要目标</strong></td>
+<td align="left">理解指令并规划路径，从A点<strong>移动到</strong>B点（目标位置）。</td>
+<td align="left">理解指令并规划动作序列，完成对物体的<strong>精细操作</strong>。</td>
+</tr>
+<tr>
+<td align="left"><strong>🌰 典型任务</strong></td>
+<td align="left">“去厨房，把放在餐桌上的红色杯子拿过来”（侧重于<strong>找到</strong>杯子）。</td>
+<td align="left">“拿起那个红色的杯子”（侧重于<strong>抓取</strong>杯子这个动作本身）。</td>
+</tr>
+<tr>
+<td align="left"><strong>⚙️ 输出形式</strong></td>
+<td align="left">移动轨迹、线速度、角速度等导航指令。</td>
+<td align="left">机械臂关节角度、夹爪开合度等操作指令。</td>
+</tr>
+<tr>
+<td align="left"><strong>🗺️ 应用场景</strong></td>
+<td align="left">扫地机器人、送货机器人、复杂环境下的自主探索。</td>
+<td align="left">家庭服务机器人（整理物品）、工业机械臂（精密装配）。</td>
+</tr>
+</tbody></table>
+<h3 id="🤝-核心联系：VLM是它们共同的“大脑”"><a href="#🤝-核心联系：VLM是它们共同的“大脑”" class="headerlink" title="🤝 核心联系：VLM是它们共同的“大脑”"></a>🤝 核心联系：VLM是它们共同的“大脑”</h3><p>尽管VLN和VLA侧重点不同，但它们并非孤立存在，而是紧密相连的：</p>
+<ol>
+<li><strong>共享相同的“感官”</strong>：两者都基于<strong>视觉（Vision）和语言（Language）</strong>这两种核心模态，都需要理解“看到了什么”以及“指令说了什么”。</li>
+<li><strong>VLM是共同的技术基石</strong>：<strong>视觉语言模型（VLM）</strong> 是这一切的基础。它就像机器人的“大脑”，负责建立视觉和语言之间的语义桥梁。<ul>
+<li>在<strong>VLN</strong>任务中，VLM帮助智能体理解指令中“在沙发旁边”指的是哪个具体位置。</li>
+<li>在<strong>VLA</strong>任务中，VLM帮助机械臂理解“红色的杯子”是哪个目标物体。</li>
+</ul>
+</li>
+<li><strong>共同构成完整的智能体</strong>：一个完整的具身智能机器人通常需要同时具备这两种能力。例如，当你命令机器人“去客厅拿一瓶水给我”时，它首先需要<strong>VLN能力</strong>导航到客厅，然后需要<strong>VLA能力</strong>识别并抓取水壶，最后可能还需要再次用VLN能力返回。从这个角度看，<strong>VLN可以看作是VLA在移动操作任务中的一个重要子集或前序步骤</strong>。</li>
+</ol>
+<h3 id="💡-一个比喻帮你理解"><a href="#💡-一个比喻帮你理解" class="headerlink" title="💡 一个比喻帮你理解"></a>💡 一个比喻帮你理解</h3><p>想象你有一个智能的<strong>AI管家</strong>，这三个概念的区别就非常清晰了：</p>
+<ul>
+<li><strong>VLM</strong> 就像是管家的<strong>认知和理解能力</strong>。你给他看一张聚会的照片，问他“大家都在干什么？”，他能回答你：“大家在客厅聊天、吃水果。” 他看懂了画面，并用语言描述出来。</li>
+<li><strong>VLN</strong> 就像是管家的<strong>认路和移动能力</strong>。你告诉他：“去二楼的卧室，把床头柜上的眼镜拿下来。” 他需要理解你的指令，然后自己规划路线，穿过走廊，爬上楼梯，准确找到卧室和床头柜的位置。</li>
+<li><strong>VLA</strong> 就像是管家的<strong>动手操作能力</strong>。当他找到了眼镜，就需要用这项能力，准确地伸出手，避开障碍物，轻柔地捏起眼镜，然后稳稳地拿给你。</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -236,7 +621,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2026-03-06 21:43:14" itemprop="dateModified" datetime="2026-03-06T21:43:14+08:00">2026-03-06</time>
+      <time title="修改时间：2026-03-30 19:38:59" itemprop="dateModified" datetime="2026-03-30T19:38:59+08:00">2026-03-30</time>
     </span>
 
   
@@ -294,11 +679,29 @@
 
 <h3 id="6-登出仓库"><a href="#6-登出仓库" class="headerlink" title="6. 登出仓库"></a>6. 登出仓库</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker <span class="built_in">logout</span> your-harbor-domain.com</span><br></pre></td></tr></table></figure>
 
+
+
+<h2 id="Docker-访问各个容器的命令"><a href="#Docker-访问各个容器的命令" class="headerlink" title="Docker 访问各个容器的命令"></a>Docker 访问各个容器的命令</h2><h3 id="MySQL"><a href="#MySQL" class="headerlink" title="MySQL"></a>MySQL</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 进入 MySQL 容器并登录</span></span><br><span class="line"><span class="built_in">sudo</span> docker <span class="built_in">exec</span> -it &lt;容器<span class="built_in">id</span>&gt; mysql -uroot -p</span><br><span class="line"></span><br><span class="line"><span class="comment"># 示例：通过容器名访问</span></span><br><span class="line"><span class="built_in">sudo</span> docker <span class="built_in">exec</span> -it mysql-container mysql -uroot -p</span><br><span class="line"></span><br><span class="line"><span class="comment"># 直接执行 SQL 命令</span></span><br><span class="line"><span class="built_in">sudo</span> docker <span class="built_in">exec</span> -it &lt;容器<span class="built_in">id</span>&gt; mysql -uroot -p -e <span class="string">&quot;SHOW DATABASES;&quot;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="PostgreSQL"><a href="#PostgreSQL" class="headerlink" title="PostgreSQL"></a>PostgreSQL</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 进入 PostgreSQL 容器</span></span><br><span class="line"><span class="built_in">sudo</span> docker <span class="built_in">exec</span> -it &lt;容器<span class="built_in">id</span>&gt; psql -U postgres</span><br><span class="line"></span><br><span class="line"><span class="comment"># 切换到指定数据库</span></span><br><span class="line"><span class="built_in">sudo</span> docker <span class="built_in">exec</span> -it &lt;容器<span class="built_in">id</span>&gt; psql -U postgres -d database_name</span><br></pre></td></tr></table></figure>
+
+<h3 id="Redis"><a href="#Redis" class="headerlink" title="Redis"></a>Redis</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 进入 Redis 容器并使用 redis-cli</span></span><br><span class="line"><span class="built_in">sudo</span> docker <span class="built_in">exec</span> -it &lt;容器<span class="built_in">id</span>&gt; redis-cli</span><br><span class="line"></span><br><span class="line"><span class="comment"># 执行 Redis 命令</span></span><br><span class="line"><span class="built_in">sudo</span> docker <span class="built_in">exec</span> -it &lt;容器<span class="built_in">id</span>&gt; redis-cli ping</span><br><span class="line"></span><br><span class="line"><span class="comment"># 需要密码认证时（-a 指定密码）</span></span><br><span class="line"><span class="built_in">sudo</span> docker <span class="built_in">exec</span> -it &lt;容器<span class="built_in">id</span>&gt; redis-cli -a your_password</span><br><span class="line"></span><br><span class="line"><span class="comment"># 或者先进入容器，再使用 AUTH 命令</span></span><br><span class="line"><span class="built_in">sudo</span> docker <span class="built_in">exec</span> -it &lt;容器<span class="built_in">id</span>&gt; redis-cli</span><br><span class="line">127.0.0.1:6379&gt; AUTH your_password</span><br></pre></td></tr></table></figure>
+
+<h3 id="MongoDB"><a href="#MongoDB" class="headerlink" title="MongoDB"></a>MongoDB</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 进入 MongoDB 容器</span></span><br><span class="line"><span class="built_in">sudo</span> docker <span class="built_in">exec</span> -it &lt;容器<span class="built_in">id</span>&gt; mongosh</span><br><span class="line"></span><br><span class="line"><span class="comment"># 或使用 mongo（旧版本）</span></span><br><span class="line"><span class="built_in">sudo</span> docker <span class="built_in">exec</span> -it &lt;容器<span class="built_in">id</span>&gt; mongo</span><br></pre></td></tr></table></figure>
+
+<h3 id="Nginx"><a href="#Nginx" class="headerlink" title="Nginx"></a>Nginx</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 进入 Nginx 容器</span></span><br><span class="line"><span class="built_in">sudo</span> docker <span class="built_in">exec</span> -it &lt;容器<span class="built_in">id</span>&gt; sh</span><br><span class="line"></span><br><span class="line"><span class="comment"># 或查看 Nginx 配置</span></span><br><span class="line"><span class="built_in">sudo</span> docker <span class="built_in">exec</span> -it &lt;容器<span class="built_in">id</span>&gt; nginx -T</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="Tdengine"><a href="#Tdengine" class="headerlink" title="Tdengine"></a>Tdengine</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 进入 Tdengine 容器</span></span><br><span class="line"><span class="built_in">sudo</span> docker <span class="built_in">exec</span> -it &lt;容器<span class="built_in">id</span>&gt; sh</span><br><span class="line">taos</span><br><span class="line"></span><br><span class="line"><span class="comment"># 修改 root 密码</span></span><br><span class="line">ALTER USER root PASS <span class="string">&#x27;YourNewPassword123&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建新用户（推荐）</span></span><br><span class="line">CREATE USER admin PASS <span class="string">&#x27;AdminPassword123&#x27;</span> SYSINFO 1;</span><br><span class="line">CREATE USER dev PASS <span class="string">&#x27;DevPassword123&#x27;</span> SYSINFO 0;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p><strong>提示</strong>：可以使用 <code>docker ps</code> 查看正在运行的容器列表，获取容器 ID 或名称。</p>
+</blockquote>
 <h3 id="常见问题"><a href="#常见问题" class="headerlink" title="常见问题"></a>常见问题</h3><h4 id="1-HTTPS-证书问题"><a href="#1-HTTPS-证书问题" class="headerlink" title="1. HTTPS 证书问题"></a>1. HTTPS 证书问题</h4><p>如果 Harbor 使用自签名证书，需要将证书添加到 Docker 信任目录：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Linux</span></span><br><span class="line"><span class="built_in">sudo</span> <span class="built_in">mkdir</span> -p /etc/docker/certs.d/your-harbor-domain.com</span><br><span class="line"><span class="built_in">cp</span> ca.crt /etc/docker/certs.d/your-harbor-domain.com/</span><br><span class="line"><span class="built_in">sudo</span> systemctl restart docker</span><br></pre></td></tr></table></figure>
 
 <h4 id="2-权限不足"><a href="#2-权限不足" class="headerlink" title="2. 权限不足"></a>2. 权限不足</h4><p>确保用户在 Harbor 项目中具有相应的权限（开发者或以上角色）。</p>
 <h4 id="3-镜像不存在"><a href="#3-镜像不存在" class="headerlink" title="3. 镜像不存在"></a>3. 镜像不存在</h4><p>推送前需要先在 Harbor Web 界面创建对应的项目（Project）。</p>
+<hr>
 
       
     </div>

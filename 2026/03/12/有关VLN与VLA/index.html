@@ -20,30 +20,26 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.27.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.json","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js" defer></script>
 
-    <meta name="description" content="写在开头在了解Docker 之前，我们先来聊聊为什么在已经有了虚拟机技术的情况下，我们还需要再造一个 Docker 容器技术? 首先，我们来举个生活场景的例子。如果把运行一个程序比作“我们要去住宿”，虚拟机就是给你盖了一栋独立别墅，而 Docker 则是给你提供了一间精装修的白领公寓。 对于每一栋别墅，也就是虚拟机（VM）都必须自己打地基、铺设独立的上下水管道、安装独立的电表（Guest OS操作">
+    <meta name="description" content="VLN 与 VLAVLN（视觉-语言-导航）和 VLA（视觉-语言-动作）都是具身智能领域的核心技术方向，你可以把它们理解为一个以“移动”为目标，另一个以“操作”为核心。它们共享相同的“大脑”（视觉语言理解能力），但执行着不同的“身体”任务。 为了让你更清晰地理解，我把它们的核心区别和联系整理成下表：    对比维度 VLN (视觉-语言-导航) VLA (视觉-语言-动作)    🤔 核心定义">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Docker">
-<meta property="og:url" content="http://example.com/2026/02/08/docker/index.html">
+<meta property="og:title" content="有关VLN与VLA">
+<meta property="og:url" content="http://example.com/2026/03/12/%E6%9C%89%E5%85%B3VLN%E4%B8%8EVLA/index.html">
 <meta property="og:site_name" content="半亩方塘一鉴开">
-<meta property="og:description" content="写在开头在了解Docker 之前，我们先来聊聊为什么在已经有了虚拟机技术的情况下，我们还需要再造一个 Docker 容器技术? 首先，我们来举个生活场景的例子。如果把运行一个程序比作“我们要去住宿”，虚拟机就是给你盖了一栋独立别墅，而 Docker 则是给你提供了一间精装修的白领公寓。 对于每一栋别墅，也就是虚拟机（VM）都必须自己打地基、铺设独立的上下水管道、安装独立的电表（Guest OS操作">
+<meta property="og:description" content="VLN 与 VLAVLN（视觉-语言-导航）和 VLA（视觉-语言-动作）都是具身智能领域的核心技术方向，你可以把它们理解为一个以“移动”为目标，另一个以“操作”为核心。它们共享相同的“大脑”（视觉语言理解能力），但执行着不同的“身体”任务。 为了让你更清晰地理解，我把它们的核心区别和联系整理成下表：    对比维度 VLN (视觉-语言-导航) VLA (视觉-语言-动作)    🤔 核心定义">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://example.com/2026/02/08/docker/Container-Hierarchy.png">
-<meta property="og:image" content="http://example.com/2026/02/08/docker/Container-Hierarchy.png">
-<meta property="article:published_time" content="2026-02-08T11:34:00.000Z">
-<meta property="article:modified_time" content="2026-03-05T05:21:58.091Z">
+<meta property="article:published_time" content="2026-03-12T06:56:59.000Z">
+<meta property="article:modified_time" content="2026-03-12T06:59:31.505Z">
 <meta property="article:author" content="Sam Fan">
-<meta property="article:tag" content="docker">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://example.com/2026/02/08/docker/Container-Hierarchy.png">
 
 
-<link rel="canonical" href="http://example.com/2026/02/08/docker/">
+<link rel="canonical" href="http://example.com/2026/03/12/%E6%9C%89%E5%85%B3VLN%E4%B8%8EVLA/">
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2026/02/08/docker/","path":"2026/02/08/docker/","title":"Docker"}</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2026/03/12/%E6%9C%89%E5%85%B3VLN%E4%B8%8EVLA/","path":"2026/03/12/有关VLN与VLA/","title":"有关VLN与VLA"}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
-<title>Docker | 半亩方塘一鉴开</title>
+<title>有关VLN与VLA | 半亩方塘一鉴开</title>
   
 
 
@@ -161,7 +157,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%86%99%E5%9C%A8%E5%BC%80%E5%A4%B4"><span class="nav-number">1.</span> <span class="nav-text">写在开头</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Docker-%E9%95%9C%E5%83%8F"><span class="nav-number">2.</span> <span class="nav-text">Docker 镜像</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Docker-%E5%AE%B9%E5%99%A8"><span class="nav-number">3.</span> <span class="nav-text">Docker 容器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Docker-%E9%95%9C%E5%83%8F-1"><span class="nav-number">4.</span> <span class="nav-text">Docker 镜像</span></a></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#VLN-%E4%B8%8E-VLA"><span class="nav-number">1.</span> <span class="nav-text">VLN 与 VLA</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%F0%9F%A4%9D-%E6%A0%B8%E5%BF%83%E8%81%94%E7%B3%BB%EF%BC%9AVLM%E6%98%AF%E5%AE%83%E4%BB%AC%E5%85%B1%E5%90%8C%E7%9A%84%E2%80%9C%E5%A4%A7%E8%84%91%E2%80%9D"><span class="nav-number">1.0.1.</span> <span class="nav-text">🤝 核心联系：VLM是它们共同的“大脑”</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%F0%9F%92%A1-%E4%B8%80%E4%B8%AA%E6%AF%94%E5%96%BB%E5%B8%AE%E4%BD%A0%E7%90%86%E8%A7%A3"><span class="nav-number">1.0.2.</span> <span class="nav-text">💡 一个比喻帮你理解</span></a></li></ol></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -210,7 +206,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2026/02/08/docker/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2026/03/12/%E6%9C%89%E5%85%B3VLN%E4%B8%8EVLA/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -223,12 +219,12 @@
     </span>
 
     <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="Docker | 半亩方塘一鉴开">
+      <meta itemprop="name" content="有关VLN与VLA | 半亩方塘一鉴开">
       <meta itemprop="description" content="">
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          Docker
+          有关VLN与VLA
         </h1>
 
         <div class="post-meta-container">
@@ -238,24 +234,9 @@
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">发表于</span>
+      
 
-      <time title="创建时间：2026-02-08 19:34:00" itemprop="dateCreated datePublished" datetime="2026-02-08T19:34:00+08:00">2026-02-08</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2026-03-05 13:21:58" itemprop="dateModified" datetime="2026-03-05T13:21:58+08:00">2026-03-05</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/devops/" itemprop="url" rel="index"><span itemprop="name">devops</span></a>
-        </span>
+      <time title="创建时间：2026-03-12 14:56:59 / 修改时间：14:59:31" itemprop="dateCreated datePublished" datetime="2026-03-12T14:56:59+08:00">2026-03-12</time>
     </span>
 
   
@@ -267,28 +248,59 @@
     
     
     
-    <div class="post-body" itemprop="articleBody"><h3 id="写在开头"><a href="#写在开头" class="headerlink" title="写在开头"></a>写在开头</h3><p>在了解Docker 之前，我们先来聊聊为什么在已经有了虚拟机技术的情况下，我们还需要再造一个 Docker 容器技术?</p>
-<p>首先，我们来举个生活场景的例子。如果把运行一个程序比作“我们要去住宿”，虚拟机就是给你盖了一栋独立别墅，而 Docker 则是给你提供了一间精装修的白领公寓。</p>
-<p>对于每一栋别墅，也就是虚拟机（VM）都必须自己打地基、铺设独立的上下水管道、安装独立的电表（Guest OS操作系统、内核、虚拟硬件）；而docker，也就是所有的公寓共享大楼的整套地基、承重梁、主水管和供电系统（宿主机内核、CPU、内存）。那么作为入住的你，是愿意等待耗时更久的别墅，还是耗时较短的公寓？当然，这是仁者见仁，智者见智的事情，也许你愿意等待，毕竟独立的别墅，比较私密，不存在共享资源的问题，相对会更安全；但是如果你只是想要快速拎包入住，对安全没有那么高的要求，那么公寓也是一个不错的选择。</p>
-<p>所以，如果程序运行的操作系统没有什么差别时，或者说所有的程序都基于统一操作系统运行，那么采用docker进行部署，就会比虚拟机更节省资源，也更高效。</p>
-<h3 id="Docker-镜像"><a href="#Docker-镜像" class="headerlink" title="Docker 镜像"></a>Docker 镜像</h3><p>前面提到docker的高效性，那么它为什么会更高效呢？这里就不得不提到docker镜像。</p>
-<p>镜像（Image）是Docker运行容器的基础，镜像可以理解为Docker容器的模板，镜像可以基于其他镜像创建，也可以作为其他镜像的基础。</p>
-<p>如果说容器是“运行中的公寓”，那么镜像（Image）就是那套极其高效的“装修图纸”和“建材包”。</p>
-<p>Docker 之所以高效，绝不仅仅是因为它省去了虚拟机内核的开销，更核心的秘密在于它对镜像存储方式的革命性设计。它采用了联合文件系统 (UnionFS)，内部的核心是分层存储(Layering)模式。</p>
-<img src="/2026/02/08/docker/Container-Hierarchy.png" class="" title="容器分层结构图">
+    <div class="post-body" itemprop="articleBody"><h1 id="VLN-与-VLA"><a href="#VLN-与-VLA" class="headerlink" title="VLN 与 VLA"></a>VLN 与 VLA</h1><p>VLN（视觉-语言-导航）和 VLA（视觉-语言-动作）都是具身智能领域的核心技术方向，你可以把它们理解为<strong>一个以“移动”为目标，另一个以“操作”为核心</strong>。它们共享相同的“大脑”（视觉语言理解能力），但执行着不同的“身体”任务。</p>
+<p>为了让你更清晰地理解，我把它们的核心区别和联系整理成下表：</p>
+<table>
+<thead>
+<tr>
+<th align="left">对比维度</th>
+<th align="left">VLN (视觉-语言-导航)</th>
+<th align="left">VLA (视觉-语言-动作)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><strong>🤔 核心定义</strong></td>
+<td align="left">智能体结合视觉信息和自然语言指令，在环境中进行<strong>导航和移动</strong>的任务。</td>
+<td align="left">智能体结合视觉、语言信息，直接<strong>生成并执行具体的物理动作</strong>（如抓取、放置）的模型。</td>
+</tr>
+<tr>
+<td align="left"><strong>🎯 主要目标</strong></td>
+<td align="left">理解指令并规划路径，从A点<strong>移动到</strong>B点（目标位置）。</td>
+<td align="left">理解指令并规划动作序列，完成对物体的<strong>精细操作</strong>。</td>
+</tr>
+<tr>
+<td align="left"><strong>🌰 典型任务</strong></td>
+<td align="left">“去厨房，把放在餐桌上的红色杯子拿过来”（侧重于<strong>找到</strong>杯子）。</td>
+<td align="left">“拿起那个红色的杯子”（侧重于<strong>抓取</strong>杯子这个动作本身）。</td>
+</tr>
+<tr>
+<td align="left"><strong>⚙️ 输出形式</strong></td>
+<td align="left">移动轨迹、线速度、角速度等导航指令。</td>
+<td align="left">机械臂关节角度、夹爪开合度等操作指令。</td>
+</tr>
+<tr>
+<td align="left"><strong>🗺️ 应用场景</strong></td>
+<td align="left">扫地机器人、送货机器人、复杂环境下的自主探索。</td>
+<td align="left">家庭服务机器人（整理物品）、工业机械臂（精密装配）。</td>
+</tr>
+</tbody></table>
+<h3 id="🤝-核心联系：VLM是它们共同的“大脑”"><a href="#🤝-核心联系：VLM是它们共同的“大脑”" class="headerlink" title="🤝 核心联系：VLM是它们共同的“大脑”"></a>🤝 核心联系：VLM是它们共同的“大脑”</h3><p>尽管VLN和VLA侧重点不同，但它们并非孤立存在，而是紧密相连的：</p>
+<ol>
+<li><strong>共享相同的“感官”</strong>：两者都基于<strong>视觉（Vision）和语言（Language）</strong>这两种核心模态，都需要理解“看到了什么”以及“指令说了什么”。</li>
+<li><strong>VLM是共同的技术基石</strong>：<strong>视觉语言模型（VLM）</strong> 是这一切的基础。它就像机器人的“大脑”，负责建立视觉和语言之间的语义桥梁。<ul>
+<li>在<strong>VLN</strong>任务中，VLM帮助智能体理解指令中“在沙发旁边”指的是哪个具体位置。</li>
+<li>在<strong>VLA</strong>任务中，VLM帮助机械臂理解“红色的杯子”是哪个目标物体。</li>
+</ul>
+</li>
+<li><strong>共同构成完整的智能体</strong>：一个完整的具身智能机器人通常需要同时具备这两种能力。例如，当你命令机器人“去客厅拿一瓶水给我”时，它首先需要<strong>VLN能力</strong>导航到客厅，然后需要<strong>VLA能力</strong>识别并抓取水壶，最后可能还需要再次用VLN能力返回。从这个角度看，<strong>VLN可以看作是VLA在移动操作任务中的一个重要子集或前序步骤</strong>。</li>
+</ol>
+<h3 id="💡-一个比喻帮你理解"><a href="#💡-一个比喻帮你理解" class="headerlink" title="💡 一个比喻帮你理解"></a>💡 一个比喻帮你理解</h3><p>想象你有一个智能的<strong>AI管家</strong>，这三个概念的区别就非常清晰了：</p>
+<ul>
+<li><strong>VLM</strong> 就像是管家的<strong>认知和理解能力</strong>。你给他看一张聚会的照片，问他“大家都在干什么？”，他能回答你：“大家在客厅聊天、吃水果。” 他看懂了画面，并用语言描述出来。</li>
+<li><strong>VLN</strong> 就像是管家的<strong>认路和移动能力</strong>。你告诉他：“去二楼的卧室，把床头柜上的眼镜拿下来。” 他需要理解你的指令，然后自己规划路线，穿过走廊，爬上楼梯，准确找到卧室和床头柜的位置。</li>
+<li><strong>VLA</strong> 就像是管家的<strong>动手操作能力</strong>。当他找到了眼镜，就需要用这项能力，准确地伸出手，避开障碍物，轻柔地捏起眼镜，然后稳稳地拿给你。</li>
+</ul>
 
-<p>这是 Docker 镜像最精妙的设计。想象一下你在装修公寓：</p>
-<p>第一层（基础层）： 铺好地板（安装 Ubuntu 系统）。</p>
-<p>第二层（环境层）： 搬进灶台（安装 JAVA 环境）。</p>
-<p>第三层（应用层）： 摆放厨具（放入你的代码）。</p>
-<p>这种分层带来的好处是惊人的：</p>
-<p><strong>复用与共享</strong>： 如果你启动了 10 个不同的 JAVA 应用，它们可以共用同一个 Ubuntu 镜像层和 JAVA 环境层（版本一样的情况下）。你的硬盘里只存了一份地板和灶台，而不是 10 份。</p>
-<p><strong>写时复制</strong> (Copy-on-Write)： 所有的镜像层都是只读的。当你修改容器里的文件时，Docker 只会把需要修改的文件“复制”到最上面的容器运行层。这保证了底层镜像永远保持纯净，且修改非常轻量。</p>
-<p><strong>极速分发</strong>： 当你更新应用时，你只需要推送（Push）发生变化的那一层（代码层），底层庞大的系统镜像不需要重复传输。</p>
-<h3 id="Docker-容器"><a href="#Docker-容器" class="headerlink" title="Docker 容器"></a>Docker 容器</h3><p>有了“装修图纸”和“建材包”，我们就可以快速构建公寓了，也就是可以基于镜像去创建容器。</p>
-<p>镜像 (Image)是静态的、只读的。它是你打包好的“环境模板”。</p>
-<p>容器 (Container)，是动态的、可读写的。它是在镜像这个“只读底座”上，加了一层<strong>可写层</strong>。</p>
-<h3 id="Docker-镜像-1"><a href="#Docker-镜像-1" class="headerlink" title="Docker 镜像"></a>Docker 镜像</h3><img src="/2026/02/08/docker/Container-Hierarchy.png" class="" title="容器分层结构图">
     </div>
 
     
@@ -296,21 +308,18 @@
     
 
     <footer class="post-footer">
-          <div class="post-tags">
-              <a href="/tags/docker/" rel="tag"># docker</a>
-          </div>
 
         
 
           <div class="post-nav">
             <div class="post-nav-item">
-                <a href="/2026/02/07/demo/" rel="prev" title="如何搭建个人博客">
-                  <i class="fa fa-angle-left"></i> 如何搭建个人博客
+                <a href="/2026/02/20/docker-usage/" rel="prev" title="Docker 相关使用">
+                  <i class="fa fa-angle-left"></i> Docker 相关使用
                 </a>
             </div>
             <div class="post-nav-item">
-                <a href="/2026/02/20/docker-usage/" rel="next" title="Docker 相关使用">
-                  Docker 相关使用 <i class="fa fa-angle-right"></i>
+                <a href="/2026/03/18/%E7%AE%80%E8%A6%81%E6%A6%82%E8%BF%B0%E9%A1%B5%E9%9D%A2%E5%A6%82%E4%BD%95%E6%8E%A5%E6%94%B6%E7%9B%B8%E6%9C%BA%E7%9A%84%E6%B5%81%E6%95%B0%E6%8D%AE/" rel="next" title="简要概述页面如何接收相机的流数据">
+                  简要概述页面如何接收相机的流数据 <i class="fa fa-angle-right"></i>
                 </a>
             </div>
           </div>
